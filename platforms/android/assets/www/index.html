@@ -1,0 +1,69 @@
+<html>
+<head>
+ 
+  <title>Hello World</title>
+</head>
+<body>
+<div class="app">
+  <h1>Apache Cordova</h1>
+
+  <div id="deviceready" class="blink">
+    <p class="event listening">Connecting to Device</p>
+
+    <p class="event received">Device is Ready</p><br/>
+    <button onclick="openCalendar()">open calendar</button><br/><br/>
+     <button onclick="createCalendarEvent()">create event</button><br/><br/>
+    <button onclick="testButton()">start to pushnotification</button><br/><br/>
+    
+  </div>
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+  var title = 'My Event Title';
+  var loc = 'My Event Location';
+  var notes = 'My interesting Event notes.';
+  var startDate = new Date();
+  var endDate = new Date();
+  var calendarName = "MyCal";
+
+  // clean up the dates a bit
+  startDate.setMinutes(0);
+  endDate.setMinutes(0);
+  startDate.setSeconds(0);
+  endDate.setSeconds(0);
+
+  // add a few hours to the dates, JS will automatically update the date (+1 day) if necessary
+  startDate.setHours(startDate.getHours() + 2);
+  endDate.setHours(endDate.getHours() + 3);
+
+  function onSuccess(msg) {
+    alert('Calendar success: ' + JSON.stringify(msg));
+  }
+
+  function onError(msg) {
+    alert('Calendar error: ' + JSON.stringify(msg));
+  }
+
+  function openCalendar() {
+    // today + 3 days
+   // var d = new Date(new Date().getTime() + 3*24*60*60*1000);
+    var d = new Date(new Date().getTime());
+    window.plugins.calendar.openCalendar(d, onSuccess, onError);
+  }
+    
+  function createCalendarEvent(){
+   window.plugins.calendar.createCalendarEvent(title,loc,notes,startDate,endDate,onSuccess,onError);
+  
+  }
+  
+  function testButton(){
+  alert("pushnotification enabled");
+   window.plugins.calendar.testButton(onSuccess, onError);
+  }
+  window.onerror = function(msg, file, line) {
+    alert(msg + '; ' + file + '; ' + line);
+  };
+</script>
+</body>
+</html>
